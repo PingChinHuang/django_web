@@ -25,7 +25,7 @@ SECRET_KEY = 'sds1r9gs=7rw&g*+sj7gjcx1itx*%o7@((9b1q$i8t3e23n%g&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', '0.0.0.0', '192.168.43.234']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mybackend'
+    'flickr'
 ]
 
 MIDDLEWARE = [
