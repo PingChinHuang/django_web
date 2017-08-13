@@ -17,6 +17,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     
     <div class="container-fluid">
+	    {% for photoset in photoset_list %}
+	    <div>
+	    <img src="{{ photoset.primary_photo_url }}"/>
+	    </div>
+	    {% endfor %}
 		<div class="alert alert-success" role="alert">
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			Test alert.
