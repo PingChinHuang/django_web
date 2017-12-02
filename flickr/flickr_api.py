@@ -2,11 +2,13 @@ import flickrapi
 import webbrowser
 
 class Photoset:
-    def __init__(self, id, title, photos, primary_photo_url):
+    def __init__(self, id, title, photos, primary_photo_url, w, h):
         self._id = id
         self._title = title
         self._photos = photos
         self._primary_photo_url = primary_photo_url
+        self._width = w
+        self._height = h
 
     @property
     def id(self):
@@ -23,6 +25,14 @@ class Photoset:
     @property
     def primary_photo_url(self):
         return self._primary_photo_url
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
 
 class FlickrUtils(object):
 
@@ -78,13 +88,17 @@ class FlickrUtils(object):
         for photoset in photosets.findall('photoset'):
             print(photoset.tag, photoset.attrib)
             for child in photoset:
-                print(child.tag, child.attrib, child.text);
+                print(child.tag, child.attrib, child.text)
                 
                 import re
                 urlRe = re.compile('url.*')
-                primary_photo_url = ''
+                heightRe = re.compile('height.*')
+                widthRe = re.compile('width.*')
+                primary_photo_url = '' 
                 id = ''
                 title = ''
+                w = ''
+                h = ''
 
                 primary_photo_obj = photoset.find('primary_photo_extras')
                 if primary_photo_obj == None:
@@ -94,6 +108,11 @@ class FlickrUtils(object):
                 for key in primary_photo_obj.attrib:
                     if urlRe.match(key):
                         primary_photo_url = primary_photo_obj.attrib[key]
+                    elif heightRe.match(key):
+                        h = primary_photo_obj.attrib[key]
+                    elif widthRe.match(key):
+                        w = primary_photo_obj.attrib[key]
+
 
                 if photoset.find('title') != None:
                     title = photoset.find('title').text
@@ -101,7 +120,7 @@ class FlickrUtils(object):
                 photoset_obj = Photoset(id,
                                         title,
                                         photoset.attrib['photos'],
-                                        primary_photo_url)
+                                        primary_photo_url, w, h)
             
             photoset_list.append(photoset_obj)
 

@@ -9,6 +9,6 @@ def index(request):
     flickr = flickr_api.FlickrUtils()
     response = flickr('get', 'photoset', 'getList',
                         user_id=my_user_id, page='1', per_page='10',
-                        primary_photo_extras='url_s')
+                        primary_photo_extras='url_m')
     photoset_list = flickr.parse_photoset_list_response(response)
     return render(request, 'flickr/index.html', {'photoset_list': photoset_list})
