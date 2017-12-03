@@ -1,19 +1,43 @@
 {% load myfilter %}
 <div class="container">
+    <div class="card-columns">
     {% for photo in photo_list %}
     <!--{% if forloop.counter0|divisibleby:10 %}-->
-    <div class="card-columns">
         <!--{% endif %}-->
-        <div class="card p-2 text-left">
-            <img src="{{ photo.url }}" class="card-img-top img-fluid"/>
+        <div class="card p-1 text-left">
+            <button class="btn btn-secondary" style="background-color: white;border: 0px;padding: 0px;" data-toggle="modal" data-target="#photoModal" data-url="{{ photo.url }}" data-title="{{ photo.title }}">
+                <img src="{{ photo.url }}" class="card-img-top img-fluid"/>
+            </button> 
+
+            <script src="/static/js/myutility.js"></script> 
+
+            <!-- Modal  -->
+            <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="max-width:800px">
+                        <div class="modal-header">
+                            <p class="modal-title photoset-title" id="photoModalLabel"></p>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+
             <div class="card-block">
                 <p class="card-title photoset-title"><a href="/photo/{{ photo.id }}/">{{photo.title}}</a></p>
             </div>
         </div>
         <!--{% if forloop.counter0|remainder:10 == 9  %}-->
-    </div>
     <!--{% endif %}-->
     {% endfor %}
+    </div>
     <!--
 <div class="alert alert-success" role="alert">
 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

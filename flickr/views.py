@@ -6,7 +6,7 @@ from . import flickr_api
 my_user_id = '45566434@N04'
 
 def index(request):
-    return photoset(request)
+    return photosets(request)
 
 def photosets(request, page = 1):
     print("num {}".format(page))

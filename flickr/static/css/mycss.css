@@ -5,3 +5,23 @@
     color: black;
     text-shadow: 1px 1px lightgray;
 }
+
+.modal-header {
+    align-items: center;
+}
+
+.card-columns {
+    -webkit-column-count: 5;
+    -moz-column-count: 5;
+    column-count: 5;
+    width: 1280px;
+    column-gap: .25rem;
+}
+
+.card-columns .card {
+    margin-bottom: .25rem;
+}
+
+.card-title {
+    margin-bottom: .10rem;
+}
