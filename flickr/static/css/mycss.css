@@ -1,0 +1,7 @@
+.photoset-title {
+    font-size: 18px;
+    font-family: Georgia;
+    white-space: nowrap;
+    color: black;
+    text-shadow: 1px 1px lightgray;
+}
