@@ -84,7 +84,9 @@ class FlickrUtils(object):
         photosets = root.find('photosets')
         if photosets == None :
             return None
-
+        
+        print("Total pages: {}, current page: {}".format(photosets.attrib['pages'], photosets.attrib['page']))
+        
         for photoset in photosets.findall('photoset'):
             print(photoset.tag, photoset.attrib)
             for child in photoset:
@@ -124,7 +126,7 @@ class FlickrUtils(object):
             
             photoset_list.append(photoset_obj)
 
-        return photoset_list
+        return photoset_list, photosets.attrib['pages'], photosets.attrib['page']
 
 if __name__ == '__main__':
     f_util = FlickrUtils()
