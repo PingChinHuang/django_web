@@ -1,13 +1,13 @@
 {% load myfilter %}
 <div class="container">
-    {% for photo in photo_list %}
+    {% for photoset in photoset_list %}
     <!--{% if forloop.counter0|divisibleby:10 %}-->
     <div class="card-columns">
         <!--{% endif %}-->
         <div class="card p-2 text-left">
-            <img src="{{ photo.url }}" class="card-img-top img-fluid"/>
+            <img src="{{ photoset.primary_photo_url }}" class="card-img-top img-fluid"/>
             <div class="card-block">
-                <p class="card-title photoset-title"><a href="/photo/{{ photo.id }}/">{{photo.title}}</a></p>
+                <p class="card-title photoset-title"><a href="/photoset/{{ photoset.id }}/1/">{{photoset.title}}</a></p>
             </div>
         </div>
         <!--{% if forloop.counter0|remainder:10 == 9  %}-->
@@ -40,7 +40,7 @@ Test alert.
                 </span>
             </li>
             {% else %}
-            <li class="page-item"><a class="page-link" href="/photoset/{{ setid }}/{{ i|add:1 }}/">{{ i|add:1 }}</a></li>
+            <li class="page-item"><a class="page-link" href="/photosets/page/{{ i|add:1 }}/">{{ i|add:1 }}</a></li>
             {% endif %}
             {% endfor %}
             <li class="page-item">
