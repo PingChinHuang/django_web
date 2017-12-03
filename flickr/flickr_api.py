@@ -194,7 +194,7 @@ class FlickrUtils(object):
             photo_obj = Photo(id, title, url, w, h)
             photo_list.append(photo_obj)
 
-        return photo_list, photoset.attrib['id'], photoset.attrib['pages'], photoset.attrib['page']
+        return photo_list, photoset.attrib['id'], photoset.attrib['pages'], photoset.attrib['page'], photoset.attrib['title']
     
 if __name__ == '__main__':
     f_util = FlickrUtils()

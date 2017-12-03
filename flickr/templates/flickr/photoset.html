@@ -1,3 +1,10 @@
 {% extends 'flickr/base.html' %}
-{% block title %}Photoset - Page {{ page }}{% endblock %}
+
+{% block title %}
+{% if pages > 1 %}
+{{ title }} - Page {{ page }}
+{% else %}
+{{ title }}
+{% endif %}
+{% endblock %}
 {% block content %}{% include 'flickr/photoset_body.html' %}{% endblock %}

@@ -24,5 +24,5 @@ def photoset(request, setid, page = 1):
                         user_id=my_user_id, page=page, per_page='50',
                         extras='url_m', photoset_id=setid)
     print(response)
-    photo_list, setid, pages, page = flickr.parse_get_photos_response(response)
-    return render(request, 'flickr/photoset.html', {'photo_list': photo_list, 'pages': int(pages), 'page': int(page), 'setid': int(setid)})    
+    photo_list, setid, pages, page, title = flickr.parse_get_photos_response(response)
+    return render(request, 'flickr/photoset.html', {'photo_list': photo_list, 'pages': int(pages), 'page': int(page), 'setid': int(setid), 'title': title})    
