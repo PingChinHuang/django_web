@@ -33,6 +33,34 @@ class Photoset:
     @property
     def height(self):
         return self._height
+    
+class Photo:
+    def __init__(self, id, title, url, w, h):
+        self._id = id
+        self._title = title
+        self._url = url
+        self._width = w
+        self._height = h
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def title(self):
+        return self._title
+
+    @property
+    def url(self):
+        return self._url
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
 
 class FlickrUtils(object):
 
@@ -52,7 +80,8 @@ class FlickrUtils(object):
         }
 
         self.photoset_get_methods = {
-            'getList': self.instance.photosets.getList        
+            'getList': self.instance.photosets.getList,
+            'getPhotos': self.instance.photosets.getPhotos
         }
 
     def __getattr__(self):
@@ -127,7 +156,46 @@ class FlickrUtils(object):
             photoset_list.append(photoset_obj)
 
         return photoset_list, photosets.attrib['pages'], photosets.attrib['page']
+    
+    def parse_get_photos_response(self, root):
+        photo_list = []
+        if root == None or root.attrib['stat'] != 'ok' :
+            return None
 
+        photoset = root.find('photoset')
+        if photoset == None :
+            return None
+        
+        print("Total pages: {}, current page: {}".format(photoset.attrib['pages'], photoset.attrib['page']))
+        
+        for photo in photoset.findall('photo'):
+            print(photo.tag, photo.attrib)
+                
+            import re
+            urlRe = re.compile('url.*')
+            heightRe = re.compile('height.*')
+            widthRe = re.compile('width.*')
+            url = '' 
+            id = ''
+            title = ''
+            w = ''
+            h = ''
+
+            id = photo.attrib['id']
+            title = photo.attrib['title']
+            for key in photo.attrib:
+                if urlRe.match(key):
+                    url = photo.attrib[key]
+                elif heightRe.match(key):
+                    h = photo.attrib[key]
+                elif widthRe.match(key):
+                    w = photo.attrib[key]
+
+            photo_obj = Photo(id, title, url, w, h)
+            photo_list.append(photo_obj)
+
+        return photo_list, photoset.attrib['id'], photoset.attrib['pages'], photoset.attrib['page']
+    
 if __name__ == '__main__':
     f_util = FlickrUtils()
     #resp = f_util.get('photos', 'getInfo', photo_id='36007097620')
