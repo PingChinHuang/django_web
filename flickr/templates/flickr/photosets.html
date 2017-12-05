@@ -1,3 +1,17 @@
 {% extends 'flickr/base.html' %}
-{% block title %}Photosets - Page {{ page }}{% endblock %}
-{% block content %}{% include 'flickr/photosets_body.html' %}{% endblock %}
+
+{% block title %}
+{% if pages > 0 %}
+Albums - Page {{ page }}
+{% else %}
+No Album Found
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if pages > 0 %}
+{% include 'flickr/photosets_body.html' %}
+{% else %}
+{% include 'flickr/no_content.html' %}
+{% endif %}
+{% endblock %}

@@ -20,6 +20,7 @@ from flickr import views
 urlpatterns = [
     #url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
+    url(r'^photosets/$', views.photosets, name='photosets'),
     url(r'^photosets/page/(?P<page>[0-9]+)/$', views.photosets, name='photosets'),
     url(r'^photoset/(?P<setid>[0-9]+)/(?P<page>[0-9]+)/$', views.photoset, name='photoset'),
 ]
