@@ -6,6 +6,25 @@
     text-shadow: 1px 1px lightgray;
 }
 
+.home-card-title {
+    font-family: Georgia;
+    color: black;
+    text-shadow: 1px 1px lightgray;
+}
+
+.home-text {
+    font-family: Georgia;
+    color: black;
+}
+
+.nav-link-font {
+    font-size: 24px;
+    font-family: Georgia;
+    white-space: nowrap;
+    color: black;
+    text-shadow: 1px 1px lightgray;
+}
+
 .modal-header {
     align-items: center;
 }
@@ -29,6 +48,11 @@
 .modal-dialog {
     max-width: 333px;
     margin: 30px auto;
+}
+
+.mynavbar-toggle-btn {
+	font-size: .750rem;
+    padding: .15rem .40rem;
 }
 
 @media (min-width: 1280px) {
