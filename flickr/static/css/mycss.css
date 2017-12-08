@@ -55,6 +55,10 @@
     padding: .15rem .40rem;
 }
 
+.container {
+    text-align:-webkit-center;
+}
+
 @media (min-width: 1280px) {
     .modal-dialog {
         max-width: 800px;
@@ -67,5 +71,20 @@
         column-count: 5;
         width: 1280px;
         column-gap: .25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-dialog {
+        max-width: 400px;
+        margin: 10px auto;
+    }
+
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+        width: 480px;
+        column-gap: .15rem;
     }
 }
