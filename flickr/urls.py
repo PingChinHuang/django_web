@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^photosets/$', views.photosets, name='photosets'),
     url(r'^photosets/page/(?P<page>[0-9]+)/$', views.photosets, name='photosets'),
     url(r'^photoset/(?P<setid>[0-9]+)/(?P<page>[0-9]+)/$', views.photoset, name='photoset'),
+    url(r'^photo/(?P<photoid>[0-9]+)/savetags$', views.photo_savetags, name='photo_savetags'),
 ]

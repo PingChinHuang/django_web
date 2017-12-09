@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.template.context_processors import csrf
 from . import flickr_api
 
 # Create your views here.
@@ -25,4 +27,8 @@ def photoset(request, setid, page = 1):
                         extras='url_m', photoset_id=setid)
     print(response)
     photo_list, setid, pages, page, title = flickr.parse_get_photos_response(response)
-    return render(request, 'flickr/photoset.html', {'photo_list': photo_list, 'pages': int(pages), 'page': int(page), 'setid': int(setid), 'title': title})    
+    return render(request, 'flickr/photoset.html', {'photo_list': photo_list, 'pages': int(pages), 'page': int(page), 'setid': int(setid), 'title': title})
+
+def photo_savetags(request, photoid):
+    print("photo id {}".format(photoid))
+    return JsonResponse({'status': 'ok'})
