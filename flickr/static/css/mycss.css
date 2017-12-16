@@ -6,6 +6,12 @@
     width: 100px;
 }
 
+.tags-font {
+    font-size: 12px;
+    font-family: Georgia;
+    white-space: nowrap;  
+}
+
 .myalert-font {
     font-size: 18px;
     font-family: Georgia;

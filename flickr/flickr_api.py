@@ -74,14 +74,20 @@ class FlickrUtils(object):
         #    print(flickr.auth_url(perms=u'write'))
         #    verifier = str(input('Verifier code: '))
         #    token = flickr.get_access_token(verifier)
-        self.photos_get_methods = {
+        self.photos_methods = {
             'getInfo': self.instance.photos.getInfo,
-            'getExif': self.instance.photos.getExif
+            'getExif': self.instance.photos.getExif,
+            'addTags': self.instance.photos.addTags,
+            'removeTags': self.instance.photos.removeTags,
         }
 
-        self.photoset_get_methods = {
+        self.photoset_methods = {
             'getList': self.instance.photosets.getList,
             'getPhotos': self.instance.photosets.getPhotos
+        }
+        
+        self.tags_methods = {
+            'getListPhoto': self.instance.tags.getListPhoto,
         }
 
     def __getattr__(self):
@@ -92,18 +98,15 @@ class FlickrUtils(object):
 
     def __call__(self, reqtype, apitype, method, **kwargs):
         return {
-            'get': self.get,
-            'set': self.set
+            'call': self.call,
         }[reqtype](apitype, method, **kwargs)
 
-    def get(self, apitype, method, **kwargs):
+    def call(self, apitype, method, **kwargs):
         return {
-            'photos': self.photos_get_methods,
-            'photoset': self.photoset_get_methods
+            'photos': self.photos_methods,
+            'photoset': self.photoset_methods,
+            'tags': self.tags_methods,
         }[apitype][method](**kwargs)
-
-    def set(self, apitype, method, **kwargs):
-        return None
 
     def parse_photoset_list_response(self, root):
         photoset_list = []
@@ -195,6 +198,26 @@ class FlickrUtils(object):
             photo_list.append(photo_obj)
 
         return photo_list, photoset.attrib['id'], photoset.attrib['pages'], photoset.attrib['page'], photoset.attrib['title']
+    
+    def parse_get_tags_response(self, root):
+        tag_list = []
+        if root == None or root.attrib['stat'] != 'ok' :
+            return None
+
+        photo = root.find('photo')
+        if photo == None :
+            return None
+        
+        tags = photo.find('tags')
+        if tags == None :
+            return None
+        print(photo.attrib['id'])
+
+        for tag in tags:
+            print('tag: {}'.format(tag.attrib['raw']))
+            tag_list.append('#' + tag.attrib['raw'])
+        
+        return tag_list
     
 if __name__ == '__main__':
     f_util = FlickrUtils()

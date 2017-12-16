@@ -23,5 +23,7 @@ urlpatterns = [
     url(r'^photosets/$', views.photosets, name='photosets'),
     url(r'^photosets/page/(?P<page>[0-9]+)/$', views.photosets, name='photosets'),
     url(r'^photoset/(?P<setid>[0-9]+)/(?P<page>[0-9]+)/$', views.photoset, name='photoset'),
-    url(r'^photo/(?P<photoid>[0-9]+)/savetags$', views.photo_savetags, name='photo_savetags'),
+    url(r'^photo/(?P<photoid>[0-9]+)/tags/add$', views.photo_tags_add, name='photo_tags_add'),
+    url(r'^photo/(?P<photoid>[0-9]+)/tags/get$', views.photo_tags_get, name='photo_tags_get'),
+    url(r'^photo/(?P<photoid>[0-9]+)/tags/remove$', views.photo_tags_remove, name='photo_tags_remove'),
 ]

@@ -1,28 +1,44 @@
-$('#photoModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var url = button.data('url') // Extract info from data-* attributes
-    var title = button.data('title') // Extract info from data-* attributes
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    var modal = $(this)
-    modal.find('.modal-title').text(title)
-    modal.find('.modal-body').find('.card').html('<img src="' + url + '" class="card-img-top img-fluid"/>')
-})
-
-$('#hash-tags-save').click(function(){
-    //$('#hash-tags').text($('#hash-tags-save').val())
-    waitingDialog.show("Saving...");
+function photoBtnClick(btn) {
+    console.log(btn.getAttribute('data-title'))
+    id = btn.getAttribute('data-id')
+    title = btn.getAttribute('data-title')
+    url = btn.getAttribute('data-url')
+    
     $.ajax({
+        type: 'GET',
+        url: '/photo/' + id + '/tags/get',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data.status)
+            var tags = '';
+            data.tags.forEach(e => {
+                console.log('tag:' + e)
+                tags += '<span class="badge badge-info tags-font">' +
+                        e + '</span>'
+            })
+            $('#hash-tags-existed').html(tags);
+        },
+        error: function() {
+        }
+    }
+    ) 
+    
+    photoModalView.show(url, title, id)
+}
+
+function tagSaveButtonClick(btn) {
+   $.ajax({
         type: 'POST',
         headers: {
           'X_CSRF_TOKEN': 'test',  
         },
-        url: '/photo/' + $('#hash-tags-save').val() + '/savetags',
+        url: '/photo/' + $('#hash-tags-save').val() + '/tags/add',
         data : {
             tags: "'" + $('#hash-tags').val() + "'",
         },
         dataType: 'json',
         success: function(data) {
+            waitingDialog.show("Saved...");
             console.log(data.status)
             //waitingDialog.hide();
             //waitingDialog.show("Saved!");
@@ -32,11 +48,15 @@ $('#hash-tags-save').click(function(){
             )
         },
         error: function() {
-            
+            waitingDialog.show('Failed...')
+            setTimeout(() => {
+                waitingDialog.hide();
+            }, 1000
+            )
         }
     }
-    )
-})
+    )    
+}
 
 var waitingDialog = waitingDialog || (function ($) {
     'use strict';
@@ -97,4 +117,66 @@ var waitingDialog = waitingDialog || (function ($) {
 		}
 	};
 
+})(jQuery);
+
+var photoModalView = photoModalView || (function($) {
+    'use strict';    
+    
+    var $view = $(            
+        '<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">' +
+                '<div class="modal-dialog" role="document">' +
+                    '<div class="modal-content">' +
+                        '<div class="modal-header">' +
+                            '<p class="modal-title photoset-title" id="photoModalLabel"></p>' +
+                            '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                                '<span aria-hidden="true">&times;</span>' +
+                            '</button>' +
+                        '</div>' +
+                        '<div class="modal-body"><div class="card"></div></div>' +
+                        '<div class="modal-footer">' +
+                            '<div class="container">' +
+                                '<span id="hash-tags-existed"></span>' +
+                                '<textarea class="form-control" id="hash-tags"></textarea>' +
+                                '<button type="button" class="btn btn-primary" id="hash-tags-save" onclick="tagSaveButtonClick(this)">Save</button>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>');
+    
+	return {
+		show: function (url, title, id) {
+			// Assigning defaults
+			if (typeof url === 'undefined') {
+				url = "";
+			}
+			if (typeof title === 'undefined') {
+				title = 'Unknown';
+			}
+            if (typeof id === 'undefined') {
+                id = -1;
+            }
+
+			// Configuring dialog
+            $view.find('.modal-title').text(title)
+            $view.find('.modal-body').find('.card').html('<img src="' + url + '" class="card-img-top img-fluid"/>')
+            $view.find('#hash-tags-save').attr('value', id)
+            
+			// Adding callbacks
+			/*if (typeof settings.onHide === 'function') {
+				$view.off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
+					settings.onHide.call($view);
+				});
+			}*/
+            
+			// Opening dialog
+			$view.modal();
+		},
+		/**
+		 * Closes dialog
+		 */
+		hide: function () {
+			$view.modal('hide');
+		}
+	};
 })(jQuery);
