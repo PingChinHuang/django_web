@@ -125,3 +125,15 @@
 #photoModal {
     overflow-y: scroll;
 }
+
+.badge:hover {
+    background-color: lightgray;
+}
+
+.badge-delete, .badge-delete:hover {
+    color: white;
+    text-decoration: none; /* remove underline when mouse hovering */
+    background-color: transparent;
+    border: 0px;
+    padding: 0px;
+}

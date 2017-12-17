@@ -22,7 +22,7 @@ function photoBtnClick(btn) {
             data.tags.forEach(e => {
                 console.log('tag:' + e)
                 tags += '<span class="badge badge-info tags-font">' +
-                        e + '</span>'
+                        e + '<button class="badge-delete" onclick="tagDeleteButtonClick(this)" tag-value="'+ e +'" photo-id="' + id + '">&times;</button></span>'
             })
             $('#hash-tags-existed').html(tags);
         },
@@ -78,6 +78,12 @@ function tagSaveButtonClick(btn) {
         }
     }
     )    
+}
+
+function tagDeleteButtonClick(btn) {
+    tag = btn.getAttribute('tag-value');
+    id = btn.getAttribute('photo-id');
+    console.log("Delete: " + id + ',' + tag);
 }
 
 var waitingDialog = waitingDialog || (function ($) {
@@ -145,7 +151,7 @@ var photoModalView = photoModalView || (function($) {
     'use strict';    
     
     var $view = $(            
-        '<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">' +
+        '<div class="modal fade" id="photoModal" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">' +
                 '<div class="modal-dialog" role="document">' +
                     '<div class="modal-content">' +
                         '<div class="modal-header">' +
