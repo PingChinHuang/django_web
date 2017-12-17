@@ -218,7 +218,7 @@ class FlickrUtils(object):
 
         for tag in tags:
             print('tag: {}'.format(tag.attrib['raw']))
-            tag_list.append('#' + tag.attrib['raw'])
+            tag_list.append(tag.attrib['raw'])
         
         return tag_list
     
