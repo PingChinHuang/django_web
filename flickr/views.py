@@ -31,15 +31,18 @@ def photoset(request, setid, page = 1):
 
 def photo_tags_add(request, photoid):
     print("photo id {}".format(photoid))
-    return JsonResponse({'status': 'pass'})
+    print("content: {}".format(request.POST['tags']))
+    
+    flickr = flickr_api.FlickrUtils()
+    response = flickr('call', 'photos', 'addTags', photo_id=photoid, tags=request.POST['tags'])
+    tags = flickr.parse_add_tags_response(response)
+    return JsonResponse({'status': 'pass', 'tags': tags})
 
 def photo_tags_get(request, photoid):
     print("photo id {}".format(photoid))
     flickr = flickr_api.FlickrUtils()
-    response = flickr('call', 'tags', 'getListPhoto',photo_id=photoid)
-    print(response)    
+    response = flickr('call', 'tags', 'getListPhoto',photo_id=photoid)   
     tags = flickr.parse_get_tags_response(response)
-    print(tags);
     return JsonResponse({'status': 'pass', 'tags': tags})
 
 def photo_tags_remove(request, photoid):

@@ -4,12 +4,20 @@ function photoBtnClick(btn) {
     title = btn.getAttribute('data-title')
     url = btn.getAttribute('data-url')
     
+    $('#hash-tags-existed').html('')
+    
     $.ajax({
         type: 'GET',
         url: '/photo/' + id + '/tags/get',
         dataType: 'json',
         success: function(data) {
+            waitingDialog.hide()
+            
             console.log(data.status)
+            if (typeof data.tags === 'undefined' || data.tags.length == 0) {
+                $('#hash-tags-existed').html('<span class="tags-font">No tag</span>');
+            }
+            
             var tags = '';
             data.tags.forEach(e => {
                 console.log('tag:' + e)
@@ -24,17 +32,18 @@ function photoBtnClick(btn) {
     ) 
     
     photoModalView.show(url, title, id)
+    waitingDialog.show("Loading...")
 }
 
 function tagSaveButtonClick(btn) {
    $.ajax({
         type: 'POST',
-        headers: {
-          'X_CSRF_TOKEN': 'test',  
-        },
+        /*headers: {
+          'Content-Type': 'application/json;charset=utf-8',  
+        },*/
         url: '/photo/' + $('#hash-tags-save').val() + '/tags/add',
         data : {
-            tags: "'" + $('#hash-tags').val() + "'",
+            'tags' : $('#hash-tags').val(),
         },
         dataType: 'json',
         success: function(data) {
@@ -42,6 +51,19 @@ function tagSaveButtonClick(btn) {
             console.log(data.status)
             //waitingDialog.hide();
             //waitingDialog.show("Saved!");
+            
+            if (typeof data !== 'undefined' && data.status == 'pass') {
+                var tags = $('#hash-tags-existed').html();
+                console.log("existed tags: " + tags)
+                data.tags.forEach(e => {
+                    console.log('tag:' + e)
+                    tags += '<span class="badge badge-info tags-font">' +
+                            e + '</span>'
+                })
+                $('#hash-tags-existed').html(tags)
+                $('#hash-tags').val('')
+            }
+            
             setTimeout(() => {
                 waitingDialog.hide();
             }, 1000

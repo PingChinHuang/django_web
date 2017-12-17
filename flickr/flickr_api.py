@@ -68,12 +68,15 @@ class FlickrUtils(object):
     api_secret = u'7a7c897f46e5e421'
 
     def __init__(self):
-        self.instance = flickrapi.FlickrAPI(self.api_key, self.api_secret);
-        #if not flickr.token_valid(perms=u'write'):
-        #    instance.get_request_token(oauth_callback='oob')
-        #    print(flickr.auth_url(perms=u'write'))
-        #    verifier = str(input('Verifier code: '))
-        #    token = flickr.get_access_token(verifier)
+        self.instance = flickrapi.FlickrAPI(self.api_key, self.api_secret)
+        self.instance.authenticate_via_browser(perms=u'write')
+        #if not self.instance.token_valid(perms=u'write'):
+            #self.instance.get_request_token(oauth_callback='oob')
+            #authorize_url = self.instance.auth_url(perms=u'write')
+            #webbrowser.open_new_tab(authorize_url)
+            #verifier = str(self.token_verifier)
+            #self.instance.get_access_token(verifier)
+            
         self.photos_methods = {
             'getInfo': self.instance.photos.getInfo,
             'getExif': self.instance.photos.getExif,
@@ -216,6 +219,21 @@ class FlickrUtils(object):
         for tag in tags:
             print('tag: {}'.format(tag.attrib['raw']))
             tag_list.append('#' + tag.attrib['raw'])
+        
+        return tag_list
+    
+    def parse_add_tags_response(self, root):
+        tag_list = []
+        if root == None or root.attrib['stat'] != 'ok' :
+            return None
+        
+        tags = root.find('tags')
+        if tags == None :
+            return None
+        
+        for tag in tags:
+            print('tag: {}'.format(tag.attrib['raw']))
+            tag_list.append(tag.attrib['raw'])
         
         return tag_list
     

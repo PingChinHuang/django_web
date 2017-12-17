@@ -3,13 +3,13 @@
     border: 0px solid transparent;
     border-radius: .15rem;
     text-align: center;
-    width: 100px;
+    width: 200px;
 }
 
 .tags-font {
     font-size: 12px;
     font-family: Georgia;
-    white-space: nowrap;  
+    white-space:normal;
 }
 
 .myalert-font {
