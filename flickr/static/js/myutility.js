@@ -20,9 +20,9 @@ function photoBtnClick(btn) {
             
             var tags = '';
             data.tags.forEach(e => {
-                console.log('tag:' + e)
+                console.log('tag:' + e.id + ', ' + e.value)
                 tags += '<span class="badge badge-info tags-font">' +
-                        e + '<button class="badge-delete" onclick="tagDeleteButtonClick(this)" tag-value="'+ e +'" photo-id="' + id + '">&times;</button></span>'
+                        e.value + '<button class="badge-delete" onclick="tagDeleteButtonClick(this)" tag-value="'+ e.value +'" photo-id="' + id + '" tag-id="' + e.id + '">&times;</button></span>'
             })
             $('#hash-tags-existed').html(tags);
         },
@@ -56,9 +56,9 @@ function tagSaveButtonClick(btn) {
                 var tags = $('#hash-tags-existed').html();
                 console.log("existed tags: " + tags)
                 data.tags.forEach(e => {
-                    console.log('tag:' + e)
+                    console.log('tag:' + e.id + ', ' + e.value)
                     tags += '<span class="badge badge-info tags-font">' +
-                            e + '</span>'
+                            e.value + '<button class="badge-delete" onclick="tagDeleteButtonClick(this)" tag-value="'+ e.value +'" photo-id="' + id + '" tag-id="' + e.id + '">&times;</button></span>'
                 })
                 $('#hash-tags-existed').html(tags)
                 $('#hash-tags').val('')
@@ -83,7 +83,43 @@ function tagSaveButtonClick(btn) {
 function tagDeleteButtonClick(btn) {
     tag = btn.getAttribute('tag-value');
     id = btn.getAttribute('photo-id');
+    tagId = btn.getAttribute('tag-id');
     console.log("Delete: " + id + ',' + tag);
+    
+   $.ajax({
+        type: 'POST',
+        /*headers: {
+          'Content-Type': 'application/json;charset=utf-8',  
+        },*/
+        url: '/photo/' + id + '/tags/remove',
+        data : {
+            'tag' : tagId,
+        },
+        dataType: 'json',
+        success: function(data) {
+            console.log(data.status)
+            if (data.status === 'pass') {
+                var btnParent = btn.parentElement;
+                btnParent.remove();
+                waitingDialog.show("Removed...");
+            }  else {
+                waitingDialog.show("Failed...");               
+            }
+            
+            setTimeout(() => {
+                waitingDialog.hide();
+            }, 1000
+            )
+        },
+        error: function() {
+            waitingDialog.show('Failed...')
+            setTimeout(() => {
+                waitingDialog.hide();
+            }, 1000
+            )
+        }
+    }
+    )    
 }
 
 var waitingDialog = waitingDialog || (function ($) {

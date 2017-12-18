@@ -69,7 +69,7 @@ class FlickrUtils(object):
 
     def __init__(self):
         self.instance = flickrapi.FlickrAPI(self.api_key, self.api_secret)
-        self.instance.authenticate_via_browser(perms=u'write')
+        self.instance.authenticate_via_browser(perms=u'delete')
         #if not self.instance.token_valid(perms=u'write'):
             #self.instance.get_request_token(oauth_callback='oob')
             #authorize_url = self.instance.auth_url(perms=u'write')
@@ -81,7 +81,7 @@ class FlickrUtils(object):
             'getInfo': self.instance.photos.getInfo,
             'getExif': self.instance.photos.getExif,
             'addTags': self.instance.photos.addTags,
-            'removeTags': self.instance.photos.removeTags,
+            'removeTag': self.instance.photos.removeTag,
         }
 
         self.photoset_methods = {
@@ -218,7 +218,8 @@ class FlickrUtils(object):
 
         for tag in tags:
             print('tag: {}'.format(tag.attrib['raw']))
-            tag_list.append(tag.attrib['raw'])
+            tag_object = {'id' : tag.attrib['id'], 'value' : tag.attrib['raw']}
+            tag_list.append(tag_object)
         
         return tag_list
     
@@ -233,9 +234,16 @@ class FlickrUtils(object):
         
         for tag in tags:
             print('tag: {}'.format(tag.attrib['raw']))
-            tag_list.append(tag.attrib['raw'])
+            tag_object = {'id' : tag.attrib['full_tag_id'], 'value' : tag.attrib['raw']}
+            tag_list.append(tag_object)
         
         return tag_list
+    
+    def parse_remove_tag_response(self, root):
+        tag_list = []
+        if root == None or root.attrib['stat'] != 'ok' :
+            return False
+        return True
     
 if __name__ == '__main__':
     f_util = FlickrUtils()

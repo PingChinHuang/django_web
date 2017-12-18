@@ -47,4 +47,10 @@ def photo_tags_get(request, photoid):
 
 def photo_tags_remove(request, photoid):
     print("photo id {}".format(photoid))
-    return JsonResponse({'status': 'pass'})
+    print("content: {}".format(request.POST['tag']))
+    flickr = flickr_api.FlickrUtils()
+    response = flickr('call', 'photos', 'removeTag',photo_id=photoid, tag_id=request.POST['tag'])
+    if flickr.parse_remove_tag_response(response):
+        return JsonResponse({'status': 'pass'})
+    else :
+        return JsonResponse({'status': 'fail'})
