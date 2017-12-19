@@ -73,8 +73,9 @@
 
 .mynavbar-toggle-btn {
     background-color: transparent;
+    border-color: lightgray;
 	font-size: .750rem;
-    padding: .15rem .30rem;
+    padding: .15rem .40rem;
 }
 
 .container {
